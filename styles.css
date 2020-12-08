@@ -1,0 +1,372 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  /* object-fit: contain; */
+}
+
+body {
+  font-family: "Rasa", serif;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  grid-auto-rows: minmax(70vh, auto);
+  padding: 3rem 10rem;
+  height: 100vh;
+  background: #44ff001a;
+}
+
+/* i tried adding the box-shadow property and value in the .container
+selector but for some reason it didn't work -- so i had to add it
+to the child elements */
+.container > * {
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Styling for first half of .container starts here */
+.banner {
+  position: relative;
+}
+
+.banner .opacity,
+.banner .textContainer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+}
+
+.banner .opacity {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.banner .textContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 0 0 5rem;
+  justify-content: center;
+}
+
+.banner .textContainer .text h1 {
+  position: relative;
+  font-size: 5rem;
+  letter-spacing: 0.15rem;
+  line-height: 3.5rem;
+  font-weight: 500;
+}
+
+.banner .textContainer .text h1 span {
+  position: absolute;
+  left: 15%;
+  top: -130%;
+}
+
+.banner .textContainer .text p {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  line-height: 2rem;
+}
+
+.banner .textContainer .text p span {
+  color: #42ff00;
+}
+
+.banner .textContainer .text .learn_more {
+  position: relative;
+  margin-top: 2rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.3rem;
+  background: rgba(225, 225, 225, 0.5);
+  text-align: center;
+  width: 30%;
+  cursor: pointer;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 3;
+}
+
+.banner .textContainer .text .learn_more::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  height: 0%;
+  width: 100%;
+  background: #42ff00;
+  z-index: -12;
+  border-radius: 0% 0% 50% 50%;
+  transition: all 0.5s ease-in-out;
+}
+
+.banner .textContainer .text .learn_more:hover::before {
+  height: 180%;
+}
+/* Styling for the first half of .container ends here */
+
+/* Styling for the second half of .container starts here */
+#app {
+  background: rgba(255, 255, 255, 0.94);
+  padding: 1.3rem 2.5rem;
+}
+
+#app .communityText {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#app h3 {
+  position: relative;
+  font-weight: bolder;
+  font-size: 180%;
+}
+
+#app h3::before {
+  position: absolute;
+  content: "";
+  height: 0.1rem;
+  left: 30%;
+  right: 30%;
+  bottom: -2px;
+  /* width: 100%; */
+  background: #42ff00;
+}
+
+.formNav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+
+.formNav p {
+  font-weight: 500;
+  font-size: 120%;
+  cursor: pointer;
+}
+
+.formNav p.active {
+  border-bottom: 1px solid #42ff00;
+  padding-bottom: 0.3rem;
+}
+
+/*  */
+
+.formContainer {
+  position: relative;
+}
+
+form {
+  margin-top: 2rem;
+}
+
+/* Hides the form that has the hidden class */
+.hidden {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.signupForm,
+.signinForm {
+  position: absolute;
+  width: 100%;
+}
+
+/* The styling here controls the form element's animation */
+.form {
+  width: 100%;
+  position: relative;
+  height: 60px;
+  overflow: hidden;
+}
+
+.form input[type="text"],
+.form input[type="password"] {
+  position: absolute;
+  bottom: 21px;
+  width: 100%;
+  height: 40%;
+  color: black;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.form label {
+  position: absolute;
+  bottom: 20px;
+  left: 0px;
+  width: 100%;
+  height: 40%;
+  pointer-events: none;
+  border-bottom: 0.5px solid #eee;
+  font-size: 16px;
+}
+
+.form label::after {
+  content: "";
+  position: absolute;
+  height: 40%;
+  width: 100%;
+  border-bottom: 1px solid #aeda9d;
+  left: 0px;
+  bottom: -1px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.form label.valid::after {
+  border-bottom: 1px solid #42ff00;
+}
+.form label.invalid::after {
+  border-bottom: 1px solid red;
+}
+
+.content-name {
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
+  transition: all 0.3s ease;
+  color: rgba(46, 44, 44, 0.967);
+}
+
+.form input:focus + .label-name .content-name,
+.form input:valid + .label-name .content-name {
+  transform: translateY(-140%);
+  font-size: 12px;
+}
+
+.form input:focus + .label-name::after,
+.form input:valid + .label-name::after {
+  transform: translateX(0%);
+}
+/* The styling for the form element's animation ends here */
+
+.terms_conditions {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.terms_conditions input {
+  cursor: pointer;
+}
+
+.terms_conditions label {
+  margin-left: 0.5rem;
+  color: #1d5f05;
+  padding-bottom: 0.01rem;
+  border-bottom: 0.08px solid #42ff00;
+  cursor: pointer;
+  font-size: 80%;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  outline: none;
+  border: none;
+  width: 100%;
+  padding: 0.5rem 2.5rem;
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #42ff00;
+  color: white;
+  font-family: "Rasa";
+  font-size: 110%;
+  cursor: pointer;
+}
+
+.formGroupValidationText {
+  position: absolute;
+  bottom: 0rem;
+  font-size: 90%;
+  color: red;
+  bottom: 4px;
+}
+
+.login {
+  margin-top: 2rem;
+}
+
+.signinForm input,
+.signinForm .content-name,
+.signinForm .formGroupValidationText {
+  padding-left: 1.8rem;
+}
+
+.signinForm {
+  margin-top: 5rem;
+}
+
+.signinForm.hidden {
+  margin-top: 0rem;
+}
+
+.signinForm .heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signinForm .heading p {
+  font-size: 150%;
+  font-weight: 400;
+  border: 1px solid black;
+  margin-top: -1rem;
+}
+
+/* Responsive Design */
+
+@media (max-width: 1024px) {
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("./Images/stil-flRm0z3MEoA-unsplash.jpg");
+  }
+
+  .banner {
+    display: none;
+  }
+
+  #app {
+    height: 70vw;
+    width: 90%;
+  }
+}
+
+@media (width: 768px) {
+  .container {
+    padding: 0 5rem;
+  }
+  #app {
+    height: 80vw;
+    width: 100%;
+  }
+}
+
+@media (max-width: 414px) {
+  .container {
+    padding: 0;
+  }
+  #app {
+    width: 100vw;
+    height: 100vh;
+  }
+}
