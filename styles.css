@@ -369,4 +369,10 @@ button {
     width: 100vw;
     height: 100vh;
   }
+
+  #passwordErrorText {
+    font-size: 80%;
+    bottom: -3.2px;
+    line-height: 90%;
+  }
 }
