@@ -1,4 +1,7 @@
 const app = Vue.createApp({
+  mounted() {
+    // this.getData();
+  },
   data() {
     return {
       signIn: false,
@@ -12,9 +15,16 @@ const app = Vue.createApp({
       signUpRpPasswordVTxt: false,
       username: "",
       email: "",
-      repeatEmail: "",
+      "repeat-email": "",
       password: "",
-      repeatPassword: "",
+      "repeat-password": "",
+      allSignUpInputsValidity: {
+        email: false,
+        username: false,
+        password: false,
+        "repeat-email": false,
+        "repeat-password": false,
+      },
       users: [
         {
           username: "Chibuzor",
@@ -31,19 +41,35 @@ const app = Vue.createApp({
         username: /^[a-z\d]{5,12}$/i,
         password: /^[\w@]{8,20}$/,
         email: /^([a-z\d\.-]+)@([a-z\d]+).([a-z]{2,8})(\.[a-z]{2,8})?$/,
+        "repeat-email": /^([a-z\d\.-]+)@([a-z\d]+).([a-z]{2,8})(\.[a-z]{2,8})?$/,
+        "repeat-password": /^[\w@]{8,20}$/,
       },
     };
   },
 
   methods: {
-    fetchUsers(url) {
-      return fetch(url).then((response) => response.json());
+    handleRequest(url, arg = "") {
+      if (arg) {
+        return fetch(url, {
+          method: arg.method,
+          headers: arg.headers,
+          body: HSON.stringify(arg.body),
+        }).then((response) =>
+          response.json().then((response) => console.log(response))
+        );
+      } else {
+        return fetch(url).then((response) =>
+          response.json().then((data) => data)
+        );
+      }
     },
 
     async getData() {
       try {
-        const responseData = await this.fetchUsers("users.json");
-        return responseData;
+        const responseData = await this.handleRequest("users.json");
+
+        // Save to browser local storage for easy access and of course, boost performance
+        localStorage.setItem("users", JSON.stringify(responseData));
       } catch (error) {
         console.log(error);
       }
@@ -53,9 +79,15 @@ const app = Vue.createApp({
       if (event.target.textContent === "Sign in") {
         this.signIn = true;
         this.signUp = false;
+        this.username = "";
+        this.password = "";
       } else if (event.target.textContent === "Sign up") {
         this.signIn = false;
         this.signUp = true;
+        this.username = "";
+        this.password = "";
+        this["repeat-email"] = "";
+        this["repeat-password"] = "";
       }
     },
 
@@ -65,26 +97,9 @@ const app = Vue.createApp({
         (user) =>
           user.username === this.username || user.password === this.password
       );
-
       // if the entered inputs matches a user
-      // if (getUserDetails) {
-      //   // if the user entered a wrong username
-      //   if (this.username !== getUserDetails.username) {
-      //     this.signInUsernameVTxt = true;
-      //     return;
-      //   } else if (this.password !== getUserDetails.password) {
-      //     this.signInPasswordVTxt = true;
-      //     return;
-      //   } else {
-      //     // Return true and set the validation text to hidden
-      //     this.signInUsernameVTxt = false;
-      //     this.signInPasswordVTxt = false;
-      //   }
-      // } else {
-      //   this.signInUsernameVTxt = true;
-      //   this.signInPasswordVTxt = true;
-      // }
       if (getUserDetails) {
+        // if the user entered a wrong username
         if (this.username !== getUserDetails.username) {
           this.signInUsernameVTxt = true;
           return;
@@ -103,6 +118,7 @@ const app = Vue.createApp({
         ) {
           this.signInUsernameVTxt = false;
           this.signInPasswordVTxt = false;
+          alert("Successfully signed in");
         }
       } else {
         this.signInUsernameVTxt = true;
@@ -111,21 +127,76 @@ const app = Vue.createApp({
       }
     },
 
-    signUpValidation() {},
+    signUpValidation() {
+      if (
+        this.allSignUpInputsValidity.email === true &&
+        this.allSignUpInputsValidity.username === true &&
+        this.allSignUpInputsValidity.password === true &&
+        this.allSignUpInputsValidity["repeat-email"] === true &&
+        this.allSignUpInputsValidity["repeat-password"] === true
+      ) {
+        alert("Successfully Signed up");
+      }
+    },
 
     validateSignUpInput(event) {
+      // if it passes the regex condtion of a valid input and entered input doesnt previously exist
       if (
         this.patterns[event.target.attributes.name.value].test(
           event.target.value
-        )
+        ) &&
+        this.checkEnteredInput(event)
       ) {
         event.target.nextElementSibling.classList.remove("invalid");
         event.target.nextElementSibling.classList.add("valid");
+        this.allSignUpInputsValidity[event.target.attributes.name.value] = true;
+        // code below helps in toggling the validationText
         this[event.target.id] = false;
       } else {
         event.target.nextElementSibling.classList.add("invalid");
+        this.allSignUpInputsValidity[
+          event.target.attributes.name.value
+        ] = false;
+        // code below helps in toggling the validationText
         this[event.target.id] = true;
       }
+    },
+
+    checkEnteredInput(event) {
+      // if it is a repeat type of input
+      if (event.target.className === "repeat") {
+        // used a ternay operator to help me ascertain what the original input i will use to compare with will be
+        const whichInput =
+          event.target.attributes.name.value === "repeat-email"
+            ? "email"
+            : "password";
+        // check the entered repeat-input to see if it matches the original
+        if (event.target.value === this[whichInput]) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        // not a repeat type of input
+        const matchedInput = this.users.find(
+          (user) =>
+            user[event.target.attributes.name.value] === event.target.value
+        );
+        return !matchedInput;
+      }
+    },
+
+    updateUsersToServer() {
+      const oldUsersData = JSON.parse(localStorage.getItem("users"));
+      const newUserData = {
+        username: this.username,
+        password: this.password,
+        email: this.email,
+      };
+      const updatedUsersData = [...oldUsersData, newUserData];
+
+      // I will come back to write codes that will later push the updatedUsersData to server
+      this.handleRequest(url, JSON.stringify(updatedUsersData));
     },
 
     showInvalidationText(arg) {

@@ -45,35 +45,35 @@
     <div class="formContainer">
       <form class="signupForm " :class="{hidden: signIn}" action="" @submit.prevent="signUpValidation">
         <div class="form" >
-          <input type="text" name="username" @input="validateSignUpInput" id="signUpUsernameVTxt" autocomplete="off" required />
+          <input type="text" name="username" v-model="username"  @input="validateSignUpInput" id="signUpUsernameVTxt" autocomplete="off" required />
           <label for="username" class="label-name">
             <span class="content-name">Username</span>
           </label>
           <span v-show="signUpUsernameVTxt" class="formGroupValidationText">Username already exists or is too short</span>
         </div>
         <div class='form'>
-          <input type="text" name="email" @input="validateSignUpInput" id="signUpEmailVTxt" autocomplete="off" required />
+          <input type="text" name="email" v-model="email" @input="validateSignUpInput"  id="signUpEmailVTxt" autocomplete="off" required />
           <label for="email" class="label-name">
             <span class="content-name">Email</span>
           </label>
-          <span v-show="signUpEmailVTxt" class="formGroupValidationText">Invalid email address</span>
+          <span v-show="signUpEmailVTxt" class="formGroupValidationText">Invalid email address or email already exist</span>
         </div>
         <div class='form'>
-          <input type="text"  id="repeatEmail"  autocomplete="off" required />
+          <input type="text" class="repeat" name="repeat-email" @input="validateSignUpInput"  id="signUpRpEmailVTxt"  autocomplete="off" required />
           <label for="repeatEmail" class="label-name">
             <span class="content-name">Repeat Email</span>
           </label>
           <span v-show="signUpRpEmailVTxt" class="formGroupValidationText">email address doesn't match</span>
         </div>
         <div class='form'>
-          <input type="password" name="password" @input="validateSignUpInput" id="signUpPasswordVTxt"  autocomplete="off" required />
+          <input type="password" name="password" v-model="password" @input="validateSignUpInput" id="signUpPasswordVTxt"  autocomplete="off" required />
           <label for="password" class="label-name">
             <span class="content-name">Password</span>
           </label>
           <span v-show="signUpPasswordVTxt" id="passwordErrorText" class="formGroupValidationText">Password must be alphanumeric and greater than 6 characters</span>
         </div>
         <div class='form'>
-          <input type="password"  id="repeatPassword"  autocomplete="off" required />
+          <input type="password" class="repeat"  @input="validateSignUpInput" name="repeat-password"  id="signUpRpPasswordVTxt"  autocomplete="off" required />
           <label for="repeatPassword" class="label-name">
             <span class="content-name">Repeat password</span>
           </label>
