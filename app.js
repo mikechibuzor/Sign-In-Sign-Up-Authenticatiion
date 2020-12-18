@@ -52,24 +52,26 @@ const app = Vue.createApp({
       if (arg) {
         return fetch(url, {
           method: arg.method,
-          headers: arg.headers,
-          body: HSON.stringify(arg.body),
-        }).then((response) =>
-          response.json().then((response) => console.log(response))
-        );
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(arg.body),
+        });
       } else {
-        return fetch(url).then((response) =>
-          response.json().then((data) => data)
-        );
+        return fetch(url).then((response) => response.json());
       }
     },
 
     async getData() {
       try {
-        const responseData = await this.handleRequest("users.json");
+        const response = await this.handleRequest(
+          "https://users-9cc57-default-rtdb.firebaseio.com/users.json"
+        );
+        const responseData = await response;
 
         // Save to browser local storage for easy access and of course, boost performance
-        localStorage.setItem("users", JSON.stringify(responseData));
+        localStorage.setItem(
+          "users",
+          JSON.stringify(responseData["-MOiEKK24W7rbjMAGC0J"].users)
+        );
       } catch (error) {
         console.log(error);
       }
@@ -195,12 +197,22 @@ const app = Vue.createApp({
       };
       const updatedUsersData = [...oldUsersData, newUserData];
 
-      // I will come back to write codes that will later push the updatedUsersData to server
-      this.handleRequest(url, JSON.stringify(updatedUsersData));
+      const postObject = {
+        method: "POST",
+        body: updatedUsersData,
+      };
+
+      this.handleRequest(url, postObject);
     },
 
     showInvalidationText(arg) {
       return (arg = true);
+    },
+
+    getUsersFromBrowserStorage() {
+      return localStorage.getItem("books")
+        ? []
+        : JSON.parse(localStorage.getItem("books"));
     },
   },
 
