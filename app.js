@@ -1,7 +1,8 @@
 const app = Vue.createApp({
   mounted() {
-    // this.getData();
+    this.getData();
   },
+
   data() {
     return {
       signIn: false,
@@ -25,18 +26,7 @@ const app = Vue.createApp({
         "repeat-email": false,
         "repeat-password": false,
       },
-      users: [
-        {
-          username: "Chibuzor",
-          password: "chibuzor2020",
-          email: "iwuagwuchibuzor@gmail.com",
-        },
-        {
-          username: "Tochukwu",
-          password: "tochi2020",
-          email: "iwuagwutochukwu@gmail.com",
-        },
-      ],
+      users: this.getUsersFromBrowserStorage(),
       patterns: {
         username: /^[a-z\d]{5,12}$/i,
         password: /^[\w@]{8,20}$/,
@@ -69,25 +59,30 @@ const app = Vue.createApp({
 
         // Save to browser local storage for easy access and of course, boost performance
         localStorage.setItem(
-          "users",
-          JSON.stringify(responseData["-MOiEKK24W7rbjMAGC0J"].users)
+          "users-data",
+          JSON.stringify(
+            responseData[
+              Object.keys(responseData)[Object.keys(responseData).length - 1]
+            ].users
+          )
         );
       } catch (error) {
         console.log(error);
       }
     },
 
-    toggleFormNav(event) {
-      if (event.target.textContent === "Sign in") {
+    toggleFormNav(arg) {
+      if (arg === "Sign in") {
         this.signIn = true;
         this.signUp = false;
         this.username = "";
         this.password = "";
-      } else if (event.target.textContent === "Sign up") {
+      } else if (arg === "Sign up") {
         this.signIn = false;
         this.signUp = true;
         this.username = "";
         this.password = "";
+        this.email = "";
         this["repeat-email"] = "";
         this["repeat-password"] = "";
       }
@@ -99,6 +94,7 @@ const app = Vue.createApp({
         (user) =>
           user.username === this.username || user.password === this.password
       );
+
       // if the entered inputs matches a user
       if (getUserDetails) {
         // if the user entered a wrong username
@@ -138,6 +134,8 @@ const app = Vue.createApp({
         this.allSignUpInputsValidity["repeat-password"] === true
       ) {
         alert("Successfully Signed up");
+        this.updateUsersToServer();
+        this.toggleFormNav("Sign in");
       }
     },
 
@@ -189,20 +187,26 @@ const app = Vue.createApp({
     },
 
     updateUsersToServer() {
-      const oldUsersData = JSON.parse(localStorage.getItem("users"));
+      // const oldUsersData = JSON.parse(localStorage.getItem("users"));
       const newUserData = {
         username: this.username,
         password: this.password,
         email: this.email,
       };
-      const updatedUsersData = [...oldUsersData, newUserData];
+      const updatedUsersData = [...this.users, newUserData];
+      const rightStructure = {
+        users: updatedUsersData,
+      };
 
       const postObject = {
         method: "POST",
-        body: updatedUsersData,
+        body: rightStructure,
       };
 
-      this.handleRequest(url, postObject);
+      this.handleRequest(
+        "https://users-9cc57-default-rtdb.firebaseio.com/users.json",
+        postObject
+      );
     },
 
     showInvalidationText(arg) {
@@ -210,9 +214,9 @@ const app = Vue.createApp({
     },
 
     getUsersFromBrowserStorage() {
-      return localStorage.getItem("books")
-        ? []
-        : JSON.parse(localStorage.getItem("books"));
+      return localStorage.getItem("users-data")
+        ? JSON.parse(localStorage.getItem("users-data"))
+        : [];
     },
   },
 

@@ -39,8 +39,8 @@
    <div id="app">
      <div class="communityText"><h3>Join our Community</h3></div>
     <div class="formNav">
-      <p :class="currentFormNav1" @click="toggleFormNav">Sign up</p>
-      <p  :class="currentFormNav2" @click="toggleFormNav">Sign in</p>
+      <p :class="currentFormNav1" @click="toggleFormNav('Sign up')">Sign up</p>
+      <p  :class="currentFormNav2" @click="toggleFormNav('Sign in')">Sign in</p>
     </div>
     <div class="formContainer">
       <form class="signupForm " :class="{hidden: signIn}" action="" @submit.prevent="signUpValidation">
