@@ -136,6 +136,7 @@ const app = Vue.createApp({
         alert("Successfully Signed up");
         this.updateUsersToServer();
         this.toggleFormNav("Sign in");
+        this.getData();
       }
     },
 
