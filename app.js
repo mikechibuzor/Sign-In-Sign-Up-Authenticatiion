@@ -104,12 +104,14 @@ const app = Vue.createApp({
         } else {
           this.signInUsernameVTxt = false;
         }
+        // if the user entered a wrong password
         if (this.password !== getUserDetails.password) {
           this.signInPasswordVTxt = true;
           return;
         } else {
           this.signInPasswordVTxt = false;
         }
+        // if both the entered inputs are correct, validate successfully
         if (
           this.password === getUserDetails.password &&
           this.username === getUserDetails.username
@@ -137,6 +139,7 @@ const app = Vue.createApp({
         this.updateUsersToServer();
         this.toggleFormNav("Sign in");
         this.getData();
+        this.users = this.getUsersFromBrowserStorage();
       }
     },
 
