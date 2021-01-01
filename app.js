@@ -66,6 +66,7 @@ const app = Vue.createApp({
             ].users
           )
         );
+        this.users = this.getUsersFromBrowserStorage();
       } catch (error) {
         console.log(error);
       }
@@ -139,7 +140,7 @@ const app = Vue.createApp({
         this.updateUsersToServer();
         this.toggleFormNav("Sign in");
         this.getData();
-        this.users = this.getUsersFromBrowserStorage();
+        // this.users = this.getUsersFromBrowserStorage();
       }
     },
 
