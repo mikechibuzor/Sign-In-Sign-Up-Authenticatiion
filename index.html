@@ -37,90 +37,90 @@
      </div>
    </div>
    <div id="app">
-     <div class="communityText"><h3>Join our Community</h3></div>
-    <div class="formNav">
-      <p :class="currentFormNav1" @click="toggleFormNav('Sign up')">Sign up</p>
-      <p  :class="currentFormNav2" @click="toggleFormNav('Sign in')">Sign in</p>
-    </div>
-    <div class="formContainer">
-      <form class="signupForm " :class="{hidden: signIn}" action="" @submit.prevent="signUpValidation">
-        <div class="form" >
-          <input type="text" name="username" v-model="username"  @input="validateSignUpInput" id="signUpUsernameVTxt" autocomplete="off" required />
-          <label for="username" class="label-name">
-            <span class="content-name">Username</span>
-          </label>
-          <span v-show="signUpUsernameVTxt" class="formGroupValidationText">Username already exists or is too short</span>
-        </div>
-        <div class='form'>
-          <input type="text" name="email" v-model="email" @input="validateSignUpInput"  id="signUpEmailVTxt" autocomplete="off" required />
-          <label for="email" class="label-name">
-            <span class="content-name">Email</span>
-          </label>
-          <span v-show="signUpEmailVTxt" class="formGroupValidationText">Invalid email address or email already exist</span>
-        </div>
-        <div class='form'>
-          <input type="text" class="repeat" name="repeat-email" @input="validateSignUpInput"  id="signUpRpEmailVTxt"  autocomplete="off" required />
-          <label for="repeatEmail" class="label-name">
-            <span class="content-name">Repeat Email</span>
-          </label>
-          <span v-show="signUpRpEmailVTxt" class="formGroupValidationText">email address doesn't match</span>
-        </div>
-        <div class='form'>
-          <input type="password" name="password" v-model="password" @input="validateSignUpInput" id="signUpPasswordVTxt"  autocomplete="off" required />
-          <label for="password" class="label-name">
-            <span class="content-name">Password</span>
-          </label>
-          <span v-show="signUpPasswordVTxt" id="passwordErrorText" class="formGroupValidationText">Password must be alphanumeric and greater than 6 characters</span>
-        </div>
-        <div class='form'>
-          <input type="password" class="repeat"  @input="validateSignUpInput" name="repeat-password"  id="signUpRpPasswordVTxt"  autocomplete="off" required />
-          <label for="repeatPassword" class="label-name">
-            <span class="content-name">Repeat password</span>
-          </label>
-          <span v-show="signUpRpPasswordVTxt" class="formGroupValidationText">Password doesn't match</span>
-        </div>
-      
-        <!-- <div class="terms_conditions"><input type="checkbox"> <a href="#">Terms and Condition</a></div> -->
-        <div class="buttonContainer"><button type="submit">Sign up</button></div>
-      </form>
-      <form action="" class="signinForm " :class="{hidden: signUp}" @submit.prevent="signInValidation">
+      <div class="communityText"><h3>Join our Community</h3></div>
+      <div class="formNav">
+        <p :class="currentFormNav1" @click="toggleFormNav('Sign up')">Sign up</p>
+        <p  :class="currentFormNav2" @click="toggleFormNav('Sign in')">Sign in</p>
+      </div>
+      <div class="formContainer">
+        <form class="signupForm " :class="{hidden: signIn}" action="" @submit.prevent="signUpValidation">
+          <div class="form" >
+            <input type="text" name="username" v-model="username"  @input="validateSignUpInput" id="signUpUsernameVTxt" autocomplete="off" required />
+            <label for="username" class="label-name">
+              <span class="content-name">Username</span>
+            </label>
+            <span v-show="signUpUsernameVTxt" class="formGroupValidationText">Username already exists or is too short</span>
+          </div>
+          <div class='form'>
+            <input type="text" name="email" v-model="email" @input="validateSignUpInput"  id="signUpEmailVTxt" autocomplete="off" required />
+            <label for="email" class="label-name">
+              <span class="content-name">Email</span>
+            </label>
+            <span v-show="signUpEmailVTxt" class="formGroupValidationText">Invalid email address or email already exist</span>
+          </div>
+          <div class='form'>
+            <input type="text" class="repeat" name="repeat-email" @input="validateSignUpInput"  id="signUpRpEmailVTxt"  autocomplete="off" required />
+            <label for="repeatEmail" class="label-name">
+              <span class="content-name">Repeat Email</span>
+            </label>
+            <span v-show="signUpRpEmailVTxt" class="formGroupValidationText">email address doesn't match</span>
+          </div>
+          <div class='form'>
+            <input type="password" name="password" v-model="password" @input="validateSignUpInput" id="signUpPasswordVTxt"  autocomplete="off" required />
+            <label for="password" class="label-name">
+              <span class="content-name">Password</span>
+            </label>
+            <span v-show="signUpPasswordVTxt" id="passwordErrorText" class="formGroupValidationText">Password must be alphanumeric and greater than 6 characters</span>
+          </div>
+          <div class='form'>
+            <input type="password" class="repeat"  @input="validateSignUpInput" name="repeat-password"  id="signUpRpPasswordVTxt"  autocomplete="off" required />
+            <label for="repeatPassword" class="label-name">
+              <span class="content-name">Repeat password</span>
+            </label>
+            <span v-show="signUpRpPasswordVTxt" class="formGroupValidationText">Password doesn't match</span>
+          </div>
         
-        <div class="form">
-          <input type="text" name="username"  v-model="username" autocomplete="off" required />
-          <label for="name" class="label-name">
-            <span class="content-name">Username</span>
-            <div class="userIcon">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                  d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z" />
-              </svg>
-            </div>
-          </label>
-          <span v-show="signInUsernameVTxt" class="formGroupValidationText">Username is incorrect</span>
-        </div>
-        <div class="form">
-          <input type="password" name="password"  v-model="password" autocomplete="off" required />
-          <label for="name" class="label-name">
-            <span class="content-name">Password</span>
-            <div class="userIcon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px"
-                height="18px">
-                <g fill="none">
-                  <path d="M0 0h24v24H0V0z" />
-                  <path d="M0 0h24v24H0V0z" opacity=".87" />
-                </g>
-                <path
-                  d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" />
-              </svg></div>
-          </label>
-          <span v-show="signInPasswordVTxt" class="formGroupValidationText">Password is incorrect</span>
-        </div>
+          <!-- <div class="terms_conditions"><input type="checkbox"> <a href="#">Terms and Condition</a></div> -->
+          <div class="buttonContainer"><button type="submit">Sign up</button></div>
+        </form>
+        <form action="" class="signinForm " :class="{hidden: signUp}" @submit.prevent="signInValidation">
+          
+          <div class="form">
+            <input type="text" name="username"  v-model="username" autocomplete="off" required />
+            <label for="name" class="label-name">
+              <span class="content-name">Username</span>
+              <div class="userIcon">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z" />
+                </svg>
+              </div>
+            </label>
+            <span v-show="signInUsernameVTxt" class="formGroupValidationText">Username is incorrect</span>
+          </div>
+          <div class="form">
+            <input type="password" name="password"  v-model="password" autocomplete="off" required />
+            <label for="name" class="label-name">
+              <span class="content-name">Password</span>
+              <div class="userIcon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px"
+                  height="18px">
+                  <g fill="none">
+                    <path d="M0 0h24v24H0V0z" />
+                    <path d="M0 0h24v24H0V0z" opacity=".87" />
+                  </g>
+                  <path
+                    d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" />
+                </svg></div>
+            </label>
+            <span v-show="signInPasswordVTxt" class="formGroupValidationText">Password is incorrect</span>
+          </div>
 
-        <div class="terms_conditions"><input type="checkbox" id="checkbox"><label for="checkbox">Keep me signed in</label> </div>
-        <div class="buttonContainer login"><button type="submit">Sign in</button></div>
-      </form>
+          <div class="terms_conditions"><input type="checkbox" id="checkbox"><label for="checkbox">Keep me signed in</label> </div>
+          <div class="buttonContainer login"><button type="submit">Sign in</button></div>
+        </form>
+      </div>
     </div>
-   </div>
  </div>
   </body>
 </html>
