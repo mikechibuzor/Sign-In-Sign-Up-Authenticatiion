@@ -14,7 +14,6 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const rootRef = database.ref("users");
 
-rootRef.update({});
 const app = Vue.createApp({
   created() {
     this.getData();
@@ -221,20 +220,25 @@ const app = Vue.createApp({
         password: this.password,
         email: this.email,
       };
-      const updatedUsersData = [...this.users, newUserData];
-      const rightStructure = {
-        users: updatedUsersData,
-      };
+      this.users = [...this.users, newUserData];
+      const updatedUsers = this.users;
+      // const updatedUsersData = [...this.users, newUserData];
+      // const rightStructure = {
+      //   users: updatedUsersData,
+      // };
 
-      const postObject = {
-        method: "POST",
-        body: rightStructure,
-      };
+      // const postObject = {
+      //   method: "POST",
+      //   body: rightStructure,
+      // };
 
-      this.handleRequest(
-        "https://users-9cc57-default-rtdb.firebaseio.com/users.json",
-        postObject
-      );
+      // this.handleRequest(
+      //   "https://users-9cc57-default-rtdb.firebaseio.com/users.json",
+      //   updatedUsersData
+      // );
+      rootRef.set({
+        updatedUsers,
+      });
     },
 
     showInvalidationText(arg) {
