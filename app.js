@@ -112,7 +112,7 @@ const app = Vue.createApp({
 
     signInValidation() {
       // Gets the user details with the user enterd inputs
-      const getUserDetails = this.users.find(
+      const getUserDetails = this.users[0].updatedUsers.find(
         (user) =>
           user.username === this.username || user.password === this.password
       );
@@ -205,7 +205,7 @@ const app = Vue.createApp({
       } else {
         // not a repeat type of input
 
-        const matchedInput = this.users.find(
+        const matchedInput = this.users[0].updatedUsers.find(
           (user) =>
             user[event.target.attributes.name.value] === event.target.value
         );
