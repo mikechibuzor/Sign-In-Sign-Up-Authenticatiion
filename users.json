@@ -1,9 +1,9 @@
 {
-    "users":[
-        {
-            "username": "Chibuzor",
-            "email": "iwuagwuchibuzor@gmail.com",
-            "password": "chibuzor2020"
-        }
-    ]
+  "users": [
+    {
+      "username": "Chibuzor",
+      "email": "iwuagwuchibuzor@gmail.com",
+      "password": "chibuzor2020"
+    }
+  ]
 }

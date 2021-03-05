@@ -1,6 +1,24 @@
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyAUqhfuRxcmRMA2rHg2aFk0PqHp6lMt31g",
+  authDomain: "users-9cc57.firebaseapp.com",
+  databaseURL: "https://users-9cc57-default-rtdb.firebaseio.com",
+  projectId: "users-9cc57",
+  storageBucket: "users-9cc57.appspot.com",
+  messagingSenderId: "208914988517",
+  appId: "1:208914988517:web:67b2148af5961b0202c30c",
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+const database = firebase.database();
+const rootRef = database.ref("users");
+
+rootRef.update({});
 const app = Vue.createApp({
-  mounted() {
+  created() {
     this.getData();
+    this.users = this.getUsersFromBrowserStorage();
   },
 
   data() {
@@ -26,7 +44,7 @@ const app = Vue.createApp({
         "repeat-email": false,
         "repeat-password": false,
       },
-      users: this.getUsersFromBrowserStorage(),
+      users: null,
       patterns: {
         username: /^[a-z\d]{5,12}$/i,
         password: /^[\w@]{8,20}$/,
@@ -56,17 +74,21 @@ const app = Vue.createApp({
           "https://users-9cc57-default-rtdb.firebaseio.com/users.json"
         );
         const responseData = await response;
-
         // Save to browser local storage for easy access and of course, boost performance
+        // localStorage.setItem(
+        //   "users-data",
+        //   JSON.stringify(
+        //     responseData[
+        //       Object.keys(responseData)[Object.keys(responseData).length - 1]
+        //     ].users
+        //   )
+        // );
+        const listOfUsers = [];
         localStorage.setItem(
           "users-data",
-          JSON.stringify(
-            responseData[
-              Object.keys(responseData)[Object.keys(responseData).length - 1]
-            ].users
-          )
+          JSON.stringify([...listOfUsers, responseData])
         );
-        this.users = this.getUsersFromBrowserStorage();
+        // this.users = this.getUsersFromBrowserStorage();
       } catch (error) {
         console.log(error);
       }
@@ -183,6 +205,7 @@ const app = Vue.createApp({
         }
       } else {
         // not a repeat type of input
+
         const matchedInput = this.users.find(
           (user) =>
             user[event.target.attributes.name.value] === event.target.value
