@@ -16,8 +16,8 @@ const rootRef = database.ref("users");
 
 const app = Vue.createApp({
   created() {
-    this.getData();
-    this.users = this.getUsersFromBrowserStorage();
+    // this.getData();
+    this.readFirebaseData();
   },
 
   data() {
@@ -67,30 +67,50 @@ const app = Vue.createApp({
       }
     },
 
-    async getData() {
-      try {
-        const response = await this.handleRequest(
-          "https://users-9cc57-default-rtdb.firebaseio.com/users.json"
-        );
-        const responseData = await response;
-        // Save to browser local storage for easy access and of course, boost performance
-        // localStorage.setItem(
-        //   "users-data",
-        //   JSON.stringify(
-        //     responseData[
-        //       Object.keys(responseData)[Object.keys(responseData).length - 1]
-        //     ].users
-        //   )
-        // );
-        const listOfUsers = [];
-        localStorage.setItem(
-          "users-data",
-          JSON.stringify([...listOfUsers, responseData])
-        );
-        // this.users = this.getUsersFromBrowserStorage();
-      } catch (error) {
-        console.log(error);
-      }
+    // async getData() {
+    //   try {
+    //     const response = await this.handleRequest(
+    //       "https://users-9cc57-default-rtdb.firebaseio.com/users.json"
+    //     );
+    //     const responseData = await response;
+    //     this.users = responseData ? responseData : [];
+    //     // Save to browser local storage for easy access and of course, boost performance
+    //     // localStorage.setItem(
+    //     //   "users-data",
+    //     //   JSON.stringify(
+    //     //     responseData[
+    //     //       Object.keys(responseData)[Object.keys(responseData).length - 1]
+    //     //     ].users
+    //     //   )
+    //     // );
+    //     // const listOfUsers = [];
+    //     // localStorage.setItem(
+    //     //   "users-data",
+    //     //   JSON.stringify([...listOfUsers, responseData])
+    //     // );
+    //     // this.users = this.getUsersFromBrowserStorage();
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+
+    readFirebaseData() {
+      rootRef.on(
+        "value",
+        async (snapshot) => {
+          const users = Object.entries(snapshot.val()).map((item) => {
+            return {
+              email: item[1].email,
+              password: item[1].password,
+              username: item[1].username,
+            };
+          });
+          this.users = await users;
+        },
+        (error) => {
+          console.log("Error" + error.code);
+        }
+      );
     },
 
     toggleFormNav(arg) {
@@ -112,7 +132,7 @@ const app = Vue.createApp({
 
     signInValidation() {
       // Gets the user details with the user enterd inputs
-      const getUserDetails = this.users[0].updatedUsers.find(
+      const getUserDetails = this.users.find(
         (user) =>
           user.username === this.username || user.password === this.password
       );
@@ -205,7 +225,7 @@ const app = Vue.createApp({
       } else {
         // not a repeat type of input
 
-        const matchedInput = this.users[0].updatedUsers.find(
+        const matchedInput = this.users.find(
           (user) =>
             user[event.target.attributes.name.value] === event.target.value
         );
@@ -215,13 +235,13 @@ const app = Vue.createApp({
 
     updateUsersToServer() {
       // const oldUsersData = JSON.parse(localStorage.getItem("users"));
-      const newUserData = {
-        username: this.username,
-        password: this.password,
-        email: this.email,
-      };
-      this.users = [...this.users, newUserData];
-      const updatedUsers = this.users;
+      // const newUserData = {
+      //   username: this.username,
+      //   password: this.password,
+      //   email: this.email,
+      // };
+      // this.users = [...this.users, newUserData];
+      // const updatedUsers = this.users;
       // const updatedUsersData = [...this.users, newUserData];
       // const rightStructure = {
       //   users: updatedUsersData,
@@ -234,10 +254,12 @@ const app = Vue.createApp({
 
       // this.handleRequest(
       //   "https://users-9cc57-default-rtdb.firebaseio.com/users.json",
-      //   updatedUsersData
+      //   newUserData
       // );
-      rootRef.set({
-        updatedUsers,
+      rootRef.push({
+        username: this.username,
+        password: this.password,
+        email: this.email,
       });
     },
 
@@ -245,11 +267,11 @@ const app = Vue.createApp({
       return (arg = true);
     },
 
-    getUsersFromBrowserStorage() {
-      return localStorage.getItem("users-data")
-        ? JSON.parse(localStorage.getItem("users-data"))
-        : [];
-    },
+    // getUsersFromBrowserStorage() {
+    //   return localStorage.getItem("users-data")
+    //     ? JSON.parse(localStorage.getItem("users-data"))
+    //     : [];
+    // },
   },
 
   computed: {
